@@ -7,6 +7,7 @@ node .\\plotPoints.js <opts>
         -c,--count  <number>    Number of shuffled sequences to generate (default: 1)
         -p,--plotPoint  <string>    Add a single plot point (multiple allowed)
         -f,--file   <file path>  Add all the plot points from the file (new line separated, multiple allowed)
+        -m,--maxPlotCount   <number>    Number of plot points to generate (capped at # inputs, default: # inputs)
 
         Pass no args to get the above help message
 ```
@@ -56,4 +57,16 @@ The hacker enters the bank
 The money disappears
 The police pull up outside
 Guns are drawn in the bank
+```
+
+## Use only a subset of the input
+
+`node .\plotPoints -f .\example-plots.txt --maxPlotCount 2`
+
+Example output:
+
+```
+0:
+The hacker enters the bank
+The bank vault opens
 ```

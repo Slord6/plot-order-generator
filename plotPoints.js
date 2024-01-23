@@ -20,6 +20,11 @@ function getArgs() {
                 short: "f",
                 multiple: true,
                 default: []
+            },
+            maxPlotCount: {
+                type: "string",
+                "short": "m",
+                default: ""
             }
         },
     });
@@ -53,6 +58,7 @@ function help() {
         -c,--count\t<number>\tNumber of shuffled sequences to generate (default: 1)
         -p,--plotPoint\t<string>\tAdd a single plot point (multiple allowed)
         -f,--file\t<file path>\tAdd all the plot points from the file (new line separated, multiple allowed)
+        -m,--maxPlotCount\t<number>\tNumber of plot points to generate (capped at # inputs, default: # inputs)
     `);
 }
 
@@ -66,6 +72,8 @@ function start() {
     for (let i = 0; i < args.values.count; i++) {
         console.log(`${i}:`);
         plots = shuffleArray(plots);
+        const plotCount = args.values.maxPlotCount !== "" ? Math.min(plots.length, Number(args.values.maxPlotCount)) : plots.length;
+        plots = plots.slice(0, plotCount);
         console.log(plots.join("\n"));
     }
 }
