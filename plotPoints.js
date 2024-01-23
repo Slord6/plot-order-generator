@@ -23,8 +23,14 @@ function getArgs() {
             },
             maxPlotCount: {
                 type: "string",
-                "short": "m",
+                short: "m",
                 default: ""
+            },
+            sample: {
+                type: "string",
+                short: "s",
+                multiple: true,
+                default: []
             }
         },
     });
@@ -32,12 +38,15 @@ function getArgs() {
     return args;
 }
 
+function readFileText(filePath) {
+    return fs.readFileSync(filePath).toString();
+}
+
 function loadPlotFiles(filePaths) {
     const allPlots = [];
     filePaths.map(filePath => {
-        return fs.readFileSync(filePath).toString()
-            .split("\n")
-            .map(plotPoint => plotPoint.trim());
+        return readFileText(filePath)
+            .split("\n");
     }).forEach(plotSet => allPlots.push(...plotSet));
     return allPlots;
 }
@@ -53,12 +62,29 @@ function shuffleArray(array) {
     return array;
 }
 
+function getSamples(samplePaths) {
+    let samples = samplePaths.map(readFileText).map(sampleText => {
+        const options = sampleText.split("\n");
+        const rand = Math.floor(Math.random() * options.length);
+        return options[rand];
+    });
+    return samples;
+}
+
+function getRandomPlots(plots, maxCount) {
+    plots = shuffleArray(plots);
+    // Limit to the maximum number of plot points for this generation
+    const subset = plots.slice(0, maxCount);
+    return subset;
+}
+
 function help() {
     console.log(`node .\\plotPoints.js <opts>
         -c,--count\t<number>\tNumber of shuffled sequences to generate (default: 1)
         -p,--plotPoint\t<string>\tAdd a single plot point (multiple allowed)
         -f,--file\t<file path>\tAdd all the plot points from the file (new line separated, multiple allowed)
         -m,--maxPlotCount\t<number>\tNumber of plot points to generate (capped at # inputs, default: # inputs)
+        -s,--sample\t<file path>Take a single line from this file and add it to the shuffled plots (multiple allowed)
     `);
 }
 
@@ -69,12 +95,13 @@ function start() {
         return help();
     }
 
+    const plotCount = args.values.maxPlotCount !== "" ? Math.min(plots.length, Number(args.values.maxPlotCount)) : plots.length;
+    // Iterate for each generation of plots
     for (let i = 0; i < args.values.count; i++) {
         console.log(`${i}:`);
-        plots = shuffleArray(plots);
-        const plotCount = args.values.maxPlotCount !== "" ? Math.min(plots.length, Number(args.values.maxPlotCount)) : plots.length;
-        plots = plots.slice(0, plotCount);
-        console.log(plots.join("\n"));
+        const randomPlots = getRandomPlots(plots, plotCount);
+        const samples = getSamples(args.values.sample);
+        console.log(shuffleArray([...randomPlots, ...samples]).join("\n"));
     }
 }
 

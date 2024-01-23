@@ -8,6 +8,7 @@ node .\\plotPoints.js <opts>
         -p,--plotPoint  <string>    Add a single plot point (multiple allowed)
         -f,--file   <file path>  Add all the plot points from the file (new line separated, multiple allowed)
         -m,--maxPlotCount   <number>    Number of plot points to generate (capped at # inputs, default: # inputs)
+        -s,--sample <file path> Take a single line from this file and add it to the shuffled plots (multiple allowed)
 
         Pass no args to get the above help message
 ```
