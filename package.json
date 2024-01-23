@@ -1,0 +1,26 @@
+{
+  "name": "plot-order-generator",
+  "version": "1.0.0",
+  "description": "Generate plot points in a random order to generate story ideas",
+  "main": "plotPoints.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Slor6/plot-order-generator.git"
+  },
+  "keywords": [
+    "writing",
+    "story",
+    "generate",
+    "random"
+  ],
+  "author": "Sam Lord",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Slor6/plot-order-generator/issues"
+  },
+  "homepage": "https://github.com/Slor6/plot-order-generator#readme"
+}
